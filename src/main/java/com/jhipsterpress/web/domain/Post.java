@@ -20,7 +20,7 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "post")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.NONE)
 @Document(indexName = "post")
 public class Post implements Serializable {
 
@@ -75,9 +75,10 @@ public class Post implements Serializable {
     @Column(name = "image_content_type")
     private String imageContentType;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Comment> comments = new HashSet<>();
+    
     @ManyToOne(optional = false)
     @NotNull
     @JsonIgnoreProperties("")
@@ -88,12 +89,12 @@ public class Post implements Serializable {
     @JsonIgnoreProperties("posts")
     private Blog blog;
 
-    @ManyToMany(mappedBy = "posts")
+    @ManyToMany(mappedBy = "posts", cascade = CascadeType.REMOVE)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JsonIgnore
     private Set<Tag> tags = new HashSet<>();
 
-    @ManyToMany(mappedBy = "posts")
+    @ManyToMany(mappedBy = "posts", cascade = CascadeType.REMOVE)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JsonIgnore
     private Set<Topic> topics = new HashSet<>();

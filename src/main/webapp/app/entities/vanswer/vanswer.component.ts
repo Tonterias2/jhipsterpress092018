@@ -162,6 +162,7 @@ export class VanswerComponent implements OnInit, OnDestroy {
         this.totalItems = parseInt(headers.get('X-Total-Count'), 10);
         this.queryCount = this.totalItems;
         this.vanswers = data;
+        console.log('CONSOLOG: M:paginateFollows & O: this.vanswers : ', this.vanswers);
     }
 
     private onError(errorMessage: string) {

@@ -162,6 +162,7 @@ export class VthumbComponent implements OnInit, OnDestroy {
         this.totalItems = parseInt(headers.get('X-Total-Count'), 10);
         this.queryCount = this.totalItems;
         this.vthumbs = data;
+        console.log('CONSOLOG: M:paginateFollows & O: this.vthumbs : ', this.vthumbs);
     }
 
     private onError(errorMessage: string) {

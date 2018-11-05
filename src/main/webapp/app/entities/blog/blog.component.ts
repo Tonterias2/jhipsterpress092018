@@ -171,6 +171,7 @@ export class BlogComponent implements OnInit, OnDestroy {
         this.totalItems = parseInt(headers.get('X-Total-Count'), 10);
         this.queryCount = this.totalItems;
         this.blogs = data;
+        console.log('CONSOLOG: M:paginateFollows & O: this.blogs : ', this.blogs);
     }
 
     private onError(errorMessage: string) {

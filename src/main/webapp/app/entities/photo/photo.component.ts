@@ -171,6 +171,7 @@ export class PhotoComponent implements OnInit, OnDestroy {
         this.totalItems = parseInt(headers.get('X-Total-Count'), 10);
         this.queryCount = this.totalItems;
         this.photos = data;
+        console.log('CONSOLOG: M:paginateFollows & O: this.photos : ', this.photos);
     }
 
     private onError(errorMessage: string) {

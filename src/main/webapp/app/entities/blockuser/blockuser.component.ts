@@ -162,6 +162,7 @@ export class BlockuserComponent implements OnInit, OnDestroy {
         this.totalItems = parseInt(headers.get('X-Total-Count'), 10);
         this.queryCount = this.totalItems;
         this.blockusers = data;
+        console.log('CONSOLOG: M:paginateBlockusers & O: this.blockusers : ', this.blockusers);
     }
 
     private onError(errorMessage: string) {

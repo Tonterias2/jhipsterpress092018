@@ -162,6 +162,7 @@ export class CommentComponent implements OnInit, OnDestroy {
         this.totalItems = parseInt(headers.get('X-Total-Count'), 10);
         this.queryCount = this.totalItems;
         this.comments = data;
+        console.log('CONSOLOG: M:paginateFollows & O: this.comments : ', this.comments);
     }
 
     private onError(errorMessage: string) {

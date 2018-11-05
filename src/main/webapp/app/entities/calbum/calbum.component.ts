@@ -162,6 +162,7 @@ export class CalbumComponent implements OnInit, OnDestroy {
         this.totalItems = parseInt(headers.get('X-Total-Count'), 10);
         this.queryCount = this.totalItems;
         this.calbums = data;
+        console.log('CONSOLOG: M:paginateFollows & O: this.calbums : ', this.calbums);
     }
 
     private onError(errorMessage: string) {

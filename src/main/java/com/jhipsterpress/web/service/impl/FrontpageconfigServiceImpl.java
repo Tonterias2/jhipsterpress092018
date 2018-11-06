@@ -3,7 +3,9 @@ package com.jhipsterpress.web.service.impl;
 import com.jhipsterpress.web.service.FrontpageconfigService;
 import com.jhipsterpress.web.domain.Frontpageconfig;
 import com.jhipsterpress.web.repository.FrontpageconfigRepository;
+import com.jhipsterpress.web.service.dto.CustomFrontpageconfigDTO;
 import com.jhipsterpress.web.repository.search.FrontpageconfigSearchRepository;
+import com.jhipsterpress.web.service.mapper.CustomFrontpageconfigMapper;
 import com.jhipsterpress.web.service.dto.FrontpageconfigDTO;
 import com.jhipsterpress.web.service.mapper.FrontpageconfigMapper;
 import org.slf4j.Logger;
@@ -32,11 +34,16 @@ public class FrontpageconfigServiceImpl implements FrontpageconfigService {
     private FrontpageconfigMapper frontpageconfigMapper;
 
     private FrontpageconfigSearchRepository frontpageconfigSearchRepository;
+    
+    private CustomFrontpageconfigMapper customFrontpageconfigMapper;
 
-    public FrontpageconfigServiceImpl(FrontpageconfigRepository frontpageconfigRepository, FrontpageconfigMapper frontpageconfigMapper, FrontpageconfigSearchRepository frontpageconfigSearchRepository) {
+    public FrontpageconfigServiceImpl(FrontpageconfigRepository frontpageconfigRepository, FrontpageconfigMapper frontpageconfigMapper, 
+    		FrontpageconfigSearchRepository frontpageconfigSearchRepository, CustomFrontpageconfigMapper customFrontpageconfigMapper) {
         this.frontpageconfigRepository = frontpageconfigRepository;
         this.frontpageconfigMapper = frontpageconfigMapper;
         this.frontpageconfigSearchRepository = frontpageconfigSearchRepository;
+        this.customFrontpageconfigMapper = customFrontpageconfigMapper;
+
     }
 
     /**
@@ -83,6 +90,20 @@ public class FrontpageconfigServiceImpl implements FrontpageconfigService {
         log.debug("Request to get Frontpageconfig : {}", id);
         return frontpageconfigRepository.findById(id)
             .map(frontpageconfigMapper::toDto);
+    }
+
+
+    /**
+     * Get one frontpageconfig by id, including the posts.
+     *
+     * @param id the id of the entity
+     * @return the entity
+     */
+    @Transactional(readOnly = true)
+    public Optional<CustomFrontpageconfigDTO> findOneIncludingPosts(Long id) {
+        log.debug("Request to get Frontpageconfig : {}", id);
+        return frontpageconfigRepository.findById(id)
+            .map(customFrontpageconfigMapper::toDto);
     }
 
     /**

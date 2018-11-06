@@ -10,24 +10,28 @@ import { ICommunity } from 'app/shared/model/community.model';
 import { CommunityService } from 'app/entities/community';
 import { IUprofile } from 'app/shared/model/uprofile.model';
 import { UprofileService } from 'app/entities/uprofile';
+import { Principal } from 'app/core';
 
 @Component({
     selector: 'jhi-activity-update',
     templateUrl: './activity-update.component.html'
 })
 export class ActivityUpdateComponent implements OnInit {
-    activity: IActivity;
+    private _activity: IActivity;
     isSaving: boolean;
 
     communities: ICommunity[];
 
     uprofiles: IUprofile[];
 
+    currentAccount: any;
+
     constructor(
         private jhiAlertService: JhiAlertService,
         private activityService: ActivityService,
         private communityService: CommunityService,
         private uprofileService: UprofileService,
+        private principal: Principal,
         private activatedRoute: ActivatedRoute
     ) {}
 
@@ -36,18 +40,11 @@ export class ActivityUpdateComponent implements OnInit {
         this.activatedRoute.data.subscribe(({ activity }) => {
             this.activity = activity;
         });
-        this.communityService.query().subscribe(
-            (res: HttpResponse<ICommunity[]>) => {
-                this.communities = res.body;
-            },
-            (res: HttpErrorResponse) => this.onError(res.message)
-        );
-        this.uprofileService.query().subscribe(
-            (res: HttpResponse<IUprofile[]>) => {
-                this.uprofiles = res.body;
-            },
-            (res: HttpErrorResponse) => this.onError(res.message)
-        );
+        this.principal.identity().then(account => {
+            this.currentAccount = account;
+            this.myCommunities(this.currentAccount);
+            this.myProfiles(this.currentAccount);
+        });
     }
 
     previousState() {
@@ -61,6 +58,35 @@ export class ActivityUpdateComponent implements OnInit {
         } else {
             this.subscribeToSaveResponse(this.activityService.create(this.activity));
         }
+    }
+
+    private myProfiles(currentAccount) {
+        const query = {};
+        if (this.currentAccount.id != null) {
+            query['userId.equals'] = this.currentAccount.id;
+        }
+        this.uprofileService.query(query).subscribe(
+            (res: HttpResponse<IUprofile[]>) => {
+                this.uprofiles = res.body;
+                console.log('CONSOLOG: M:myProfiles & O: res.body : ', res.body);
+            },
+            (res: HttpErrorResponse) => this.onError(res.message)
+        );
+    }
+
+    private myCommunities(currentAccount) {
+        const query = {};
+        if (this.currentAccount.id != null) {
+            query['userId.equals'] = this.currentAccount.id;
+        }
+        this.communityService.query(query).subscribe(
+            (res: HttpResponse<ICommunity[]>) => {
+                this.communities = res.body;
+                console.log('CONSOLOG: M:myCommunities & O: res.body : ', res.body);
+            },
+            (res: HttpErrorResponse) => this.onError(res.message)
+        );
+        console.log('CONSOLOG: M:myCommunities & O: this.currentAccount.id : ', this.currentAccount.id);
     }
 
     private subscribeToSaveResponse(result: Observable<HttpResponse<IActivity>>) {
@@ -97,5 +123,13 @@ export class ActivityUpdateComponent implements OnInit {
             }
         }
         return option;
+    }
+
+    get activity() {
+        return this._activity;
+    }
+
+    set activity(activity: IActivity) {
+        this._activity = activity;
     }
 }

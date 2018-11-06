@@ -6,6 +6,7 @@
                 "title": "Activities",
                 "createLabel": "Create a new Activity",
                 "createOrEditLabel": "Create or edit a Activity",
+                "myLabel": "My Activity",
                 "search": "Search for Activity"
             },
             "created": "A new Activity is created with identifier {{ param }}",
